@@ -1,0 +1,23 @@
+body{
+	width : 1024px;
+	margin : 0px auto;
+}
+html{
+	box-shadow : 0px 0px 300px 2px #000 inset;
+}
+
+#main{
+	text-align : center; 
+}
+header, nav, #main{
+	margin : 10px 0px;
+	background-color : white;
+	padding : 5px;
+	border-radius : 10px;
+	border : solid 5px black;
+}
+
+header{
+	text-align : center;
+}
+

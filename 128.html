@@ -1,31 +1,41 @@
+<!DOCTYPE html>
 <html>
   <head>
     <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+	<link rel = "stylesheet" type = "text/css" href = "cssindex.css">
   </head>
+  <header>
+  <h2>Content:</h2>
+  <div id='messagesDiv'></div>
+  </header>
   <body>
-    <div id='messagesDiv'></div>
-	<h1> Enter Information</h1>
+  <body background = "bg.jpg">
+    
+	<div id = 'main'>
     <input type='text' id='nameInput' placeholder='Name'>
-    <input type='text' id='organizationInput' placeholder='Organization'>
+    <input type='text' id='orgInput' placeholder='Organization'>
 	<input type='text' id='cnumInput' placeholder='Contact Number'>
+	</div>
     <script>
       var myDataRef = new Firebase('https://sobrevinas-ab4l-a3.firebaseio.com/');
-      $('#messageInput').keypress(function (e) {
+      $('#cnumInput').keypress(function (e) {
         if (e.keyCode == 13) {
           var name = $('#nameInput').val();
-          var organization = $('#organizationInput').val();
+          var org = $('#orgInput').val();
 		  var cNum = $('#cnumInput').val();
-          myDataRef.push({name: name, organization: organization, cNum: cNum});
-          $('#messageInput').val('');
+          myDataRef.push({name: name, org: org, cNum: cNum});
+		  $('#nameInput').val('');
+		  $('#orgInput').val('');
+          $('#cnumInput').val('');
         }
       });
       myDataRef.on('child_added', function(snapshot) {
-     var message = snapshot.val();
-displayChatMessage(message.name, message.text);
+        var message = snapshot.val();
+        displayChatMessage(message.name, message.org, message.cNum);
       });
-      function displayChatMessage(name, text) {
-        $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
+      function displayChatMessage(name, org, cNum) {
+        $('<div/>').text(cNum).prepend($('<em/>').text(name+', ' + org + ', ')).appendTo($('#messagesDiv'));
         $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
       };
     </script>
