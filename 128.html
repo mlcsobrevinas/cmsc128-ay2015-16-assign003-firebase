@@ -1,42 +1,57 @@
+<!--
+Miguel Luis C. Sobrevinas
+CMSC 128 AB-4L
+2012-25200
+Event Guest Attendance
+Programming Assignment 03
+source: firebase.com/tutorial
+-->
+
 <!DOCTYPE html>
 <html>
   <head>
+  <!--installs the firebase javascript library-->
     <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
 	<link rel = "stylesheet" type = "text/css" href = "cssindex.css">
   </head>
   <header>
   <h2>Content:</h2>
-  <div id='messagesDiv'></div>
+  <div id='listDiv'></div>
   </header>
   <body>
   <body background = "bg.jpg">
     
 	<div id = 'main'>
-    <input type='text' id='nameInput' placeholder='Name'>
+	<!--text boxes-->
+    <input type='text' id='nameInput' placeholder='Name'>		
     <input type='text' id='orgInput' placeholder='Organization'>
 	<input type='text' id='cnumInput' placeholder='Contact Number'>
 	</div>
     <script>
-      var myDataRef = new Firebase('https://sobrevinas-ab4l-a3.firebaseio.com/');
+	
+      var myDataRef = new Firebase('https://sobrevinas-ab4l-a3.firebaseio.com/'); <!--creaes a reference to the root of the firebase database-->
       $('#cnumInput').keypress(function (e) {
+	  <!--if user presses enter-->
         if (e.keyCode == 13) {
           var name = $('#nameInput').val();
           var org = $('#orgInput').val();
 		  var cNum = $('#cnumInput').val();
-          myDataRef.push({name: name, org: org, cNum: cNum});
+          myDataRef.push({name: name, org: org, cNum: cNum}); 	<!--helping function the makes creating list easy-->
 		  $('#nameInput').val('');
 		  $('#orgInput').val('');
           $('#cnumInput').val('');
         }
       });
+	  <!--call callback with a snapshot containing the message's data-->
       myDataRef.on('child_added', function(snapshot) {
         var message = snapshot.val();
-        displayChatMessage(message.name, message.org, message.cNum);
+        displayList(message.name, message.org, message.cNum);
       });
-      function displayChatMessage(name, org, cNum) {
-        $('<div/>').text(cNum).prepend($('<em/>').text(name+', ' + org + ', ')).appendTo($('#messagesDiv'));
-        $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+	  <!--function to display list of present guests-->
+      function displayList(name, org, cNum) {
+        $('<div/>').text(cNum).prepend($('<em/>').text(name+', ' + org + ', ')).appendTo($('#listDiv'));
+        $('#listDiv')[0].scrollTop = $('#listDiv')[0].scrollHeight;
       };
     </script>
   </body>
